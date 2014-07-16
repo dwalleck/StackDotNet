@@ -31,12 +31,60 @@ namespace StackDotNet.Clients
             return servers_response.Servers;
         }
 
+        public async Task<List<Server>> ListServersDetailed()
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/detail");
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListServersResponse servers_response = JsonConvert.DeserializeObject<ListServersResponse>(response_body);
+            return servers_response.Servers;
+        }
+
         public async Task<Server> GetServer(string serverId)
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId);
             var response_body = await response.Content.ReadAsStringAsync();
             GetServerResponse server_response = JsonConvert.DeserializeObject<GetServerResponse>(response_body);
             return server_response.Server;
+        }
+
+        public async Task<List<Flavor>> ListFlavors()
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/flavors");
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListFlavorsResponse flavors_response = JsonConvert.DeserializeObject<ListFlavorsResponse>(response_body);
+            return flavors_response.Flavors;
+        }
+
+        public async Task<List<Flavor>> ListFlavorsDetailed()
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/flavors/detail");
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListFlavorsResponse flavors_response = JsonConvert.DeserializeObject<ListFlavorsResponse>(response_body);
+            return flavors_response.Flavors;
+        }
+
+        public async Task<Flavor> GetFlavor(string flavorId)
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/flavors/" + flavorId);
+            var response_body = await response.Content.ReadAsStringAsync();
+            GetFlavorResponse flavor_response = JsonConvert.DeserializeObject<GetFlavorResponse>(response_body);
+            return flavor_response.Flavor;
+        }
+
+        public async Task<List<Image>> ListImages()
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images");
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(response_body);
+            return images_response.Images;
+        }
+
+        public async Task<List<Image>> ListImagesDetailed()
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail");
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(response_body);
+            return images_response.Images;
         }
 
     }

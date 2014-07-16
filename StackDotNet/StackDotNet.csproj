@@ -34,13 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Clients\BlockStorageClient.cs" />
     <Compile Include="Clients\ComputeClient.cs" />
     <Compile Include="Clients\IdentityClient.cs" />
+    <Compile Include="Models\BlockStorage\Volumes.cs" />
     <Compile Include="Models\Compute\Common\Link.cs" />
     <Compile Include="Models\Compute\Flavor.cs" />
     <Compile Include="Models\Compute\Images.cs" />
     <Compile Include="Models\Compute\Server.cs" />
-    <Compile Include="Models\Compute\Test.cs" />
     <Compile Include="Models\Identity\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

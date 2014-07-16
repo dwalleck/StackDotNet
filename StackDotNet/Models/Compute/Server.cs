@@ -23,10 +23,10 @@ namespace StackDotNet.Models.Compute
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "updated")]
-        public string Updated { get; set; }
+        public DateTime Updated { get; set; }
 
         [JsonProperty(PropertyName = "created")]
-        public string Created { get; set; }
+        public DateTime Created { get; set; }
 
         [JsonProperty(PropertyName = "hostId")]
         public string HostId { get; set; }
@@ -80,7 +80,7 @@ namespace StackDotNet.Models.Compute
         public string ConfigDrive { get; set; }
 
         [JsonProperty(PropertyName = "OS-SRV-USG:terminated_at")]
-        public string TerminatedAt { get; set; }
+        public DateTime? TerminatedAt { get; set; }
 
         [JsonProperty(PropertyName = "OS-SRV-USG:launched_at")]
         public string LaunchedAt { get; set; }
@@ -109,11 +109,6 @@ namespace StackDotNet.Models.Compute
 
         [JsonProperty(PropertyName = "private")]
         public List<Addresss> PrivateAddresses { get; set; }
-    }
-
-    public class Metadata
-    {
-
     }
 
     public class ListServersResponse

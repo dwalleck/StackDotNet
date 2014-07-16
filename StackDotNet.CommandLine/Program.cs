@@ -24,6 +24,11 @@ namespace StackDotNet.CommandLine
             var servers = computeClient.ListServers().Result;
             var server = computeClient.GetServer(servers[0].Id).Result;
             Console.WriteLine(server);
+            var flavors = computeClient.ListFlavorsDetailed().Result;
+            var images = computeClient.ListImagesDetailed().Result;
+
+            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cinder", "RegionOne").publicURL, access.token.id);
+            var volumes = blockStorageClient.ListVolumes().Result;
             Console.WriteLine();
 
 
