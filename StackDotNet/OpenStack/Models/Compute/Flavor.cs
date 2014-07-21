@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StackDotNet.Models.Compute.Common;
+using StackDotNet.OpenStack.Models.Compute.Common;
 using Newtonsoft.Json;
 
-namespace StackDotNet.Models.Compute
+namespace StackDotNet.OpenStack.Models.Compute
 {
     public class Flavor
     {

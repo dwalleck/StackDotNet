@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using StackDotNet.Models.Compute.Common;
+using StackDotNet.OpenStack.Models.Compute.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.Models.Compute
+namespace StackDotNet.OpenStack.Models.Compute
 {
     public class Image
     {

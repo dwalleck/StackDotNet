@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using StackDotNet.Clients;
-using StackDotNet.Models.Compute;
-using StackDotNet.Models.Identity;
+using StackDotNet.OpenStack.Clients;
+using StackDotNet.OpenStack.Models.Compute;
+using StackDotNet.OpenStack.Models.Identity;
 using StackDotNet.CommandLine.Properties;
 
 namespace StackDotNet.CommandLine

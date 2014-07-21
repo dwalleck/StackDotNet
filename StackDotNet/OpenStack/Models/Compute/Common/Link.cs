@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.Models.Compute.Common
+namespace StackDotNet.OpenStack.Models.Compute.Common
 {
     public class Link
     {

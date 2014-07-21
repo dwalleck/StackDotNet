@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.Models.BlockStorage
+namespace StackDotNet.OpenStack.Models.BlockStorage
 {
     public class Volume
     {

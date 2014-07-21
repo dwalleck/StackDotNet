@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.Models.Identity
+namespace StackDotNet.OpenStack.Models.Identity
 {
     public class AuthRequest
     {

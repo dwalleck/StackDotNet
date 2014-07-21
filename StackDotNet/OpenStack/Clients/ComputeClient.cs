@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using StackDotNet.Models.Compute;
+using StackDotNet.OpenStack.Models.Compute;
 using Newtonsoft.Json;
 
-namespace StackDotNet.Clients
+namespace StackDotNet.OpenStack.Clients
 {
     public class ComputeClient
     {

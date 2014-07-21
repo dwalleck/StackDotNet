@@ -34,15 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Clients\BlockStorageClient.cs" />
-    <Compile Include="Clients\ComputeClient.cs" />
-    <Compile Include="Clients\IdentityClient.cs" />
-    <Compile Include="Models\BlockStorage\Volumes.cs" />
-    <Compile Include="Models\Compute\Common\Link.cs" />
-    <Compile Include="Models\Compute\Flavor.cs" />
-    <Compile Include="Models\Compute\Images.cs" />
-    <Compile Include="Models\Compute\Server.cs" />
-    <Compile Include="Models\Identity\Token.cs" />
+    <Compile Include="OpenStack\Clients\BlockStorageClient.cs" />
+    <Compile Include="OpenStack\Clients\ComputeClient.cs" />
+    <Compile Include="OpenStack\Clients\IdentityClient.cs" />
+    <Compile Include="OpenStack\Models\BlockStorage\Volumes.cs" />
+    <Compile Include="OpenStack\Models\Compute\Common\Link.cs" />
+    <Compile Include="OpenStack\Models\Compute\Flavor.cs" />
+    <Compile Include="OpenStack\Models\Compute\Images.cs" />
+    <Compile Include="OpenStack\Models\Compute\Server.cs" />
+    <Compile Include="OpenStack\Models\Identity\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,7 +62,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ThirdParty\Rackspace\Clients\" />
+    <Folder Include="ThirdParty\Rackspace\Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
