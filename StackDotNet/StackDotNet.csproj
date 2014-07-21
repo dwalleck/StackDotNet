@@ -44,6 +44,8 @@
     <Compile Include="OpenStack\Models\Compute\Server.cs" />
     <Compile Include="OpenStack\Models\Identity\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThirdParty\Rackspace\Clients\CloudIdentityClient.cs" />
+    <Compile Include="ThirdParty\Rackspace\Models\CloudIdentity\Tokens.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -62,10 +64,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ThirdParty\Rackspace\Clients\" />
-    <Folder Include="ThirdParty\Rackspace\Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

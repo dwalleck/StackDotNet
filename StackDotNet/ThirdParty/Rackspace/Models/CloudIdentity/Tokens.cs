@@ -5,46 +5,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.OpenStack.Models.Identity
+namespace StackDotNet.ThirdParty.Rackspace.Models.CloudIdentity
 {
+    
     public class AuthRequest
     {
         [JsonProperty(PropertyName = "auth")]
         public Auth Auth { get; set; }
 
-        public AuthRequest(string username, string password, string tenantName)
+        public AuthRequest(string username, string apiKey, string tenantId)
         {
-            Auth = new Auth(username, password, tenantName);
+            Auth = new Auth(username, apiKey, tenantId);
         }
     }
 
     public class Auth
     {
-        [JsonProperty(PropertyName = "passwordCredentials")]
-        public PasswordCredentials PasswordCredentials { get; set; }
+        [JsonProperty(PropertyName = "RAX-KSKEY:apiKeyCredentials")]
+        public ApiKeyCredentials ApiKeyCredentials { get; set; }
+        
+        [JsonProperty(PropertyName = "tenantId")]
+        public string TenantId { get; set; }
 
-        [JsonProperty(PropertyName = "tenantName")]
-        public string TenantName { get; set; }
-
-        public Auth(string username, string password, string tenantName)
+        public Auth(string username, string apiKey, string tenantId)
         {
-            this.PasswordCredentials = new PasswordCredentials(username, password);
-            this.TenantName = tenantName;
-        }
+            this.ApiKeyCredentials = new ApiKeyCredentials(username, apiKey);
+            this.TenantId = tenantId;
+        }   
     }
 
-    public class PasswordCredentials
+    public class ApiKeyCredentials
     {
         [JsonProperty(PropertyName = "username")]
         public string Username { get; set; }
 
-        [JsonProperty(PropertyName = "password")]
-        public string Password { get; set; }
+        [JsonProperty(PropertyName = "apiKey")]
+        public string ApiKey { get; set; }
 
-        public PasswordCredentials(string username, string password)
+        public ApiKeyCredentials(string username, string apiKey)
         {
             this.Username = username;
-            this.Password = password;
+            this.ApiKey = apiKey;
         }
     }
 
@@ -148,8 +149,10 @@ namespace StackDotNet.OpenStack.Models.Identity
 
         public Endpoint GetEndpoint(string name, string region)
         {
-            var catalog = ServiceCatalog.Where(c => c.Name == name && c.Endpoints[0].Region == region).FirstOrDefault();
-            return catalog.Endpoints[0];
+            //var catalog = ServiceCatalog.Where(c => c.Name == name && c.Endpoints[0].Region == region).FirstOrDefault();
+            var service = ServiceCatalog.Where(c => c.Name == name).FirstOrDefault();
+            var endpoint = service.Endpoints.Where(s => s.Region == region).FirstOrDefault();
+            return endpoint;
         }
     }
 
@@ -158,4 +161,5 @@ namespace StackDotNet.OpenStack.Models.Identity
         [JsonProperty(PropertyName = "access")]
         public Access Access { get; set; }
     }
+
 }

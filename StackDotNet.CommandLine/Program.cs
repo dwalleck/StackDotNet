@@ -9,6 +9,7 @@ using StackDotNet.OpenStack.Clients;
 using StackDotNet.OpenStack.Models.Compute;
 using StackDotNet.OpenStack.Models.Identity;
 using StackDotNet.CommandLine.Properties;
+using StackDotNet.ThirdParty.Rackspace.Clients;
 
 namespace StackDotNet.CommandLine
 {
@@ -17,10 +18,14 @@ namespace StackDotNet.CommandLine
     {
         static void Main(string[] args)
         {
-            var identityClient = new IdentityClient(Resources.authEndpoint);
-            var access_response = identityClient.Authenticate(Resources.username, Resources.password, Resources.username);
+            //var identityClient = new IdentityClient(Resources.authEndpoint);
+            //var access_response = identityClient.Authenticate(Resources.username, Resources.password, Resources.username);
+
+            var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
+            var access_response = identityClient.Authenticate("", "", "");
             var access = access_response.Result;
-            var computeClient = new ComputeClient(access.GetEndpoint("nova", "RegionOne").publicURL, access.token.id);
+            //var computeClient = new ComputeClient(access.GetEndpoint("nova", "RegionOne").PublicUrl, access.Token.Id);
+            var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
             var servers = computeClient.ListServersDetailed().Result;
             var s = computeClient.GetServer(servers[0].Id).Result;
             Console.WriteLine("Number of servers: " + servers.Count);
@@ -43,7 +48,7 @@ namespace StackDotNet.CommandLine
             Console.WriteLine("Disk used: " + totalDisk);
             Console.WriteLine("CPUs used: " + totalCPUs);
 
-            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cinder", "RegionOne").publicURL, access.token.id);
+            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
             var volumes = blockStorageClient.ListVolumes().Result;
             Console.WriteLine("Number of volumes: " + volumes.Count);
             Console.WriteLine();
