@@ -39,6 +39,7 @@
     <Compile Include="OpenStack\Clients\IdentityClient.cs" />
     <Compile Include="OpenStack\Models\BlockStorage\Volumes.cs" />
     <Compile Include="OpenStack\Models\Compute\Common\Link.cs" />
+    <Compile Include="OpenStack\Models\Compute\Extensions\VolumeAttachments\VolumeAttachments.cs" />
     <Compile Include="OpenStack\Models\Compute\Flavor.cs" />
     <Compile Include="OpenStack\Models\Compute\Images.cs" />
     <Compile Include="OpenStack\Models\Compute\Server.cs" />
