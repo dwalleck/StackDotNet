@@ -111,6 +111,12 @@ namespace StackDotNet.OpenStack.Models.Compute
         public List<Addresss> PrivateAddresses { get; set; }
     }
 
+    public class ListAddressesResponse
+    {
+        [JsonProperty(PropertyName = "addresses")]
+        public Addresses Addresses { get; set; }
+    }
+
     public class ListServersResponse
     {
         [JsonProperty(PropertyName = "servers")]

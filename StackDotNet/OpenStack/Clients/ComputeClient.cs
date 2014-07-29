@@ -23,9 +23,12 @@ namespace StackDotNet.OpenStack.Clients
             BaseUrl = baseUrl;
         }
 
+        #region Servers
+
         public async Task<List<Server>> ListServers()
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers");
+            response.EnsureSuccessStatusCode();
             var response_body = await response.Content.ReadAsStringAsync();
             ListServersResponse servers_response = JsonConvert.DeserializeObject<ListServersResponse>(response_body);
             return servers_response.Servers;
@@ -34,6 +37,7 @@ namespace StackDotNet.OpenStack.Clients
         public async Task<List<Server>> ListServersDetailed()
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/detail");
+            response.EnsureSuccessStatusCode();
             var response_body = await response.Content.ReadAsStringAsync();
             ListServersResponse servers_response = JsonConvert.DeserializeObject<ListServersResponse>(response_body);
             return servers_response.Servers;
@@ -42,11 +46,30 @@ namespace StackDotNet.OpenStack.Clients
         public async Task<Server> GetServer(string serverId)
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId);
+            response.EnsureSuccessStatusCode();
             var response_body = await response.Content.ReadAsStringAsync();
             GetServerResponse server_response = JsonConvert.DeserializeObject<GetServerResponse>(response_body);
             return server_response.Server;
         }
 
+        public async void DeleteServer(string serverId)
+        {
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/servers/" + serverId);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<Addresses> ListServerAddresses(string serverId)
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId + "/ips");
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListAddressesResponse addresses_response = JsonConvert.DeserializeObject<ListAddressesResponse>(response_body);
+            return addresses_response.Addresses;
+        }
+
+        #endregion
+
+        #region Flavors
         public async Task<List<Flavor>> ListFlavors()
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/flavors");
@@ -71,6 +94,10 @@ namespace StackDotNet.OpenStack.Clients
             return flavor_response.Flavor;
         }
 
+        #endregion
+
+        #region Images
+
         public async Task<List<Image>> ListImages()
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images");
@@ -86,6 +113,8 @@ namespace StackDotNet.OpenStack.Clients
             ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(response_body);
             return images_response.Images;
         }
+
+        #endregion
 
     }
 }
