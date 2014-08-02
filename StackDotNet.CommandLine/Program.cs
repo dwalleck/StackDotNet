@@ -22,7 +22,7 @@ namespace StackDotNet.CommandLine
             //var access_response = identityClient.Authenticate(Resources.username, Resources.password, Resources.username);
 
             var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
-            var access_response = identityClient.Authenticate("", "", "");
+            var access_response = identityClient.Authenticate("qeuser1", "64de43be5b024361b0425196450345a6", "658803");
             var access = access_response.Result;
             //var computeClient = new ComputeClient(access.GetEndpoint("nova", "RegionOne").PublicUrl, access.Token.Id);
             var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
@@ -51,6 +51,11 @@ namespace StackDotNet.CommandLine
             var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
             var volumes = blockStorageClient.ListVolumes().Result;
             Console.WriteLine("Number of volumes: " + volumes.Count);
+
+            var objectStorageClient = new ObjectStorageClient(access.GetEndpoint("cloudFiles", "DFW").PublicUrl, access.Token.Id);
+            var accountMeta = objectStorageClient.GetAccountMetadata().Result;
+            Console.WriteLine(accountMeta.BytesUsed);
+
             Console.WriteLine();
 
 
