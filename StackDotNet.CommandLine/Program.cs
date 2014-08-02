@@ -22,7 +22,7 @@ namespace StackDotNet.CommandLine
             //var access_response = identityClient.Authenticate(Resources.username, Resources.password, Resources.username);
 
             var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
-            var access_response = identityClient.Authenticate("qeuser1", "64de43be5b024361b0425196450345a6", "658803");
+            var access_response = identityClient.Authenticate("", "", "");
             var access = access_response.Result;
             //var computeClient = new ComputeClient(access.GetEndpoint("nova", "RegionOne").PublicUrl, access.Token.Id);
             var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
