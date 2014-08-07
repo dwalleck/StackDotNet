@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="OpenStack\Clients\BlockStorageClient.cs" />
     <Compile Include="OpenStack\Clients\ComputeClient.cs" />
+    <Compile Include="OpenStack\Clients\IComputeClient.cs" />
     <Compile Include="OpenStack\Clients\IdentityClient.cs" />
     <Compile Include="OpenStack\Clients\ObjectStorageClient.cs" />
     <Compile Include="OpenStack\Models\BlockStorage\Volumes.cs" />

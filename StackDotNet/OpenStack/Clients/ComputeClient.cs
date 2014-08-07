@@ -52,7 +52,7 @@ namespace StackDotNet.OpenStack.Clients
             return server_response.Server;
         }
 
-        public async void DeleteServer(string serverId)
+        public async Task DeleteServer(string serverId)
         {
             HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/servers/" + serverId);
             response.EnsureSuccessStatusCode();
@@ -65,6 +65,46 @@ namespace StackDotNet.OpenStack.Clients
             var response_body = await response.Content.ReadAsStringAsync();
             ListAddressesResponse addresses_response = JsonConvert.DeserializeObject<ListAddressesResponse>(response_body);
             return addresses_response.Addresses;
+        }
+
+        public async Task<Server> CreateServer(string name, string imageId, string flavorId)
+        {
+
+        }
+
+        public async Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6)
+        {
+            
+        }
+
+        public async void GetServerMetadata(string serverId)
+        {
+
+        }
+
+        public async void SetServerMetadata(string serverId)
+        {
+
+        }
+
+        public async void UpdateServerMetadata(string serverId)
+        {
+
+        }
+
+        public async void GetServerMetadataItem(string serverId)
+        {
+
+        }
+
+        public async void SetServerMetadataItem(string serverId)
+        {
+
+        }
+
+        public async void DeleteServerMetadataItem(string serverId)
+        {
+
         }
 
         #endregion
