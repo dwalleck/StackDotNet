@@ -5,11 +5,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using StackDotNet.OpenStack.Models.Compute;
+using StackDotNet.OpenStack.Models.Compute.Requests;
 using Newtonsoft.Json;
 
 namespace StackDotNet.OpenStack.Clients
 {
-    public class ComputeClient
+    public class ComputeClient : IComputeClient
     {
         public HttpClient Client { get; set; }
         public string BaseUrl { get; set; }
@@ -48,7 +49,7 @@ namespace StackDotNet.OpenStack.Clients
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId);
             response.EnsureSuccessStatusCode();
             var response_body = await response.Content.ReadAsStringAsync();
-            GetServerResponse server_response = JsonConvert.DeserializeObject<GetServerResponse>(response_body);
+            ServerResponse server_response = JsonConvert.DeserializeObject<ServerResponse>(response_body);
             return server_response.Server;
         }
 
@@ -69,42 +70,90 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task<Server> CreateServer(string name, string imageId, string flavorId)
         {
-
+            CreateServerRequest requestBody = new CreateServerRequest(name, imageId, flavorId);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            ServerResponse serverResponse = JsonConvert.DeserializeObject<ServerResponse>(responseBody);
+            return serverResponse.Server;
         }
 
         public async Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6)
         {
-            
+            throw new NotImplementedException();
         }
 
         public async void GetServerMetadata(string serverId)
         {
-
+            throw new NotImplementedException();
         }
 
         public async void SetServerMetadata(string serverId)
         {
-
+            throw new NotImplementedException();
         }
 
         public async void UpdateServerMetadata(string serverId)
         {
-
+            throw new NotImplementedException();
         }
 
         public async void GetServerMetadataItem(string serverId)
         {
-
+            throw new NotImplementedException();
         }
 
         public async void SetServerMetadataItem(string serverId)
         {
-
+            throw new NotImplementedException();
         }
 
-        public async void DeleteServerMetadataItem(string serverId)
+        public async Task DeleteServerMetadataItem(string serverId)
         {
+            throw new NotImplementedException();
+        }
 
+        public async Task ChangeServerPassword(string serverId, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task RebootServer(string serverId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Server> RebuildServer(string serverId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ResizeServer(string serverId, string newFlavor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ConfirmServerResize(string serverId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task RevertServerResize(string serverId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> CreateImage(string serverId, string name)
+        {
+            CreateImageRequest requestBody = new CreateImageRequest(name);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
+
+            var imageLocation = response.Headers.GetValues("location").FirstOrDefault();
+            var imageId = imageLocation.Split('/').Last();
+            return imageId;
         }
 
         #endregion
@@ -152,6 +201,49 @@ namespace StackDotNet.OpenStack.Clients
             var response_body = await response.Content.ReadAsStringAsync();
             ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(response_body);
             return images_response.Images;
+        }
+
+        public async Task DeleteImage(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Image> GetImage(string imageId)
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/" + imageId);
+            var response_body = await response.Content.ReadAsStringAsync();
+            GetImageResponse image_response = JsonConvert.DeserializeObject<GetImageResponse>(response_body);
+            return image_response.Image;
+        }
+
+        public async void GetImageMetadata(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void SetImageMetadata(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void UpdateImageMetadata(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void GetImageMetadataItem(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void SetImageMetadataItem(string imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteImageMetadataItem(string imageId)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

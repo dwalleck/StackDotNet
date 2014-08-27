@@ -44,6 +44,9 @@
     <Compile Include="OpenStack\Models\Compute\Extensions\VolumeAttachments\VolumeAttachments.cs" />
     <Compile Include="OpenStack\Models\Compute\Flavor.cs" />
     <Compile Include="OpenStack\Models\Compute\Images.cs" />
+    <Compile Include="OpenStack\Models\Compute\Requests\CreateImage.cs" />
+    <Compile Include="OpenStack\Models\Compute\Requests\CreateServer.cs" />
+    <Compile Include="OpenStack\Models\Compute\Requests\UpdateServer.cs" />
     <Compile Include="OpenStack\Models\Compute\Server.cs" />
     <Compile Include="OpenStack\Models\Identity\Token.cs" />
     <Compile Include="OpenStack\Models\ObjectStorage\AccountMetadata.cs" />

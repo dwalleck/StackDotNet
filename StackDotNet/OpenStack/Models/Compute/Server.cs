@@ -123,7 +123,7 @@ namespace StackDotNet.OpenStack.Models.Compute
         public List<Server> Servers { get; set; }
     }
 
-    public class GetServerResponse
+    public class ServerResponse
     {
         [JsonProperty(PropertyName = "server")]
         public Server Server { get; set; }

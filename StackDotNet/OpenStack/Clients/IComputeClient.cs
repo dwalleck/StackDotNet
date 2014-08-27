@@ -7,80 +7,83 @@ using System.Threading.Tasks;
 
 namespace StackDotNet.OpenStack.Clients
 {
-    interface IComputeClient
+    public interface IComputeClient
     {
         #region Servers
 
-        public async Task<List<Server>> ListServers();
+        Task<List<Server>> ListServers();
 
-        public async Task<List<Server>> ListServersDetailed();
+        Task<List<Server>> ListServersDetailed();
 
-        public async Task<Server> GetServer(string serverId);
+        Task<Server> GetServer(string serverId);
 
-        public async Task DeleteServer(string serverId);
+        Task DeleteServer(string serverId);
 
-        public async Task<Addresses> ListServerAddresses(string serverId);
+        Task<Addresses> ListServerAddresses(string serverId);
 
-        public async Task<Server> CreateServer(string name, string imageId, string flavorId);
+        Task<Server> CreateServer(string name, string imageId, string flavorId);
 
-        public async Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6);
+        Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6);
 
-        public async void GetServerMetadata(string serverId);
+        void GetServerMetadata(string serverId);
 
-        public async void SetServerMetadata(string serverId);
+        void SetServerMetadata(string serverId);
 
-        public async void UpdateServerMetadata(string serverId);
+        void UpdateServerMetadata(string serverId);
 
-        public async void GetServerMetadataItem(string serverId);
+        void GetServerMetadataItem(string serverId);
 
-        public async void SetServerMetadataItem(string serverId);
+        void SetServerMetadataItem(string serverId);
 
-        public async Task DeleteServerMetadataItem(string serverId);
+        Task DeleteServerMetadataItem(string serverId);
 
-        public async Task ChangeServerPassword(string serverId, string newPassword);
+        Task ChangeServerPassword(string serverId, string newPassword);
 
-        public async Task RebootServer(string serverId);
+        Task RebootServer(string serverId);
 
-        public async Task<Server> RebuildServer(string serverId);
+        Task<Server> RebuildServer(string serverId);
 
-        public async Task ResizeServer(string serverId, string newFlavor);
+        Task ResizeServer(string serverId, string newFlavor);
 
-        public async Task ConfirmServerResize(string serverId);
+        Task ConfirmServerResize(string serverId);
 
-        public async Task RevertServerResize(string serverId);
+        Task RevertServerResize(string serverId);
 
-        public async Task CreateImage(string serverId);
+        Task<string> CreateImage(string serverId, string name);
 
         #endregion
 
         #region Flavors
-        public async Task<List<Flavor>> ListFlavors();
 
-        public async Task<List<Flavor>> ListFlavorsDetailed();
+        Task<List<Flavor>> ListFlavors();
 
-        public async Task<Flavor> GetFlavor(string flavorId);
+        Task<List<Flavor>> ListFlavorsDetailed();
+
+        Task<Flavor> GetFlavor(string flavorId);
 
         #endregion
 
         #region Images
 
-        public async Task<List<Image>> ListImages();
+        Task<List<Image>> ListImages();
 
-        public async Task<List<Image>> ListImagesDetailed();
+        Task<List<Image>> ListImagesDetailed();
 
-        public async Task DeleteImage(string imageId);
+        Task DeleteImage(string imageId);
 
-        public async void GetImageMetadata(string imageId);
+        Task<Image> GetImage(string imageId);
 
-        public async void SetImageMetadata(string imageId);
+        void GetImageMetadata(string imageId);
 
-        public async void UpdateImageMetadata(string imageId);
+        void SetImageMetadata(string imageId);
 
-        public async void GetImageMetadataItem(string imageId);
+        void UpdateImageMetadata(string imageId);
 
-        public async void SetImageMetadataItem(string imageId);
+        void GetImageMetadataItem(string imageId);
 
-        public async Task DeleteImageMetadataItem(string imageId);
+        void SetImageMetadataItem(string imageId);
+
+        Task DeleteImageMetadataItem(string imageId);
 
         #endregion
     }
