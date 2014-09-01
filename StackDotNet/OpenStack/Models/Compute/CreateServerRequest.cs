@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.OpenStack.Models.Compute.Requests
+namespace StackDotNet.OpenStack.Models.Compute
 {
     
     public class CreateServerRequest
     {
         [JsonProperty(PropertyName = "server")]
-        public CreateServerContent Server { get; set; }
+        public CreateServerContent RequestContent { get; set; }
 
         public CreateServerRequest(string name, string imageId, string flavorId)
         {
-            Server = new CreateServerContent
+            RequestContent = new CreateServerContent
             {
                 Name = name,
                 ImageRef = imageId,

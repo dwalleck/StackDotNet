@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using StackDotNet.OpenStack.Clients;
 using StackDotNet.OpenStack.Models.Compute;
-using StackDotNet.OpenStack.Models.Compute.Requests;
 using StackDotNet.OpenStack.Models.Identity;
 using StackDotNet.CommandLine.Properties;
 using StackDotNet.ThirdParty.Rackspace.Clients;
@@ -24,7 +23,7 @@ namespace StackDotNet.CommandLine
             var access_response = identityClient.Authenticate("", "", "");
             var access = access_response.Result;
             var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "SYD").PublicUrl, access.Token.Id);
-            BastionContext Context = new BastionContext();
+            /*BastionContext Context = new BastionContext();
 
             var images = Context.Images.FindAll();
 
@@ -56,7 +55,7 @@ namespace StackDotNet.CommandLine
 
 
 
-            });
+            });*/
 
             /*foreach (var i in images)
             {

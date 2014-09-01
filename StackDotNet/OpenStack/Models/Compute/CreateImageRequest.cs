@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.OpenStack.Models.Compute.Requests
+namespace StackDotNet.OpenStack.Models.Compute
 {
     public class CreateImageRequest
     {
         [JsonProperty(PropertyName = "createImage")]
-        public CreateImageContent Image { get; set; }
+        public CreateImageContent RequestContent { get; set; }
 
         public CreateImageRequest(string name)
         {
-            Image = new CreateImageContent
+            RequestContent = new CreateImageContent
             {
                 Name = name
             };

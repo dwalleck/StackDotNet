@@ -5,12 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackDotNet.OpenStack.Models.Compute.Requests
+namespace StackDotNet.OpenStack.Models.Compute
 {
     
     public class UpdateServerRequest
     {
-        public UpdateServerContent server { get; set; }
+        public UpdateServerContent RequestContent { get; set; }
+
+        public UpdateServerRequest(string name, string accessIPv4, string accessIPv6)
+        {
+            RequestContent = new UpdateServerContent
+            {
+                Name = name,
+                AccessIPv4 = accessIPv4,
+                AccessIPv6 = accessIPv6
+            };
+        }
     }
 
     public class UpdateServerContent

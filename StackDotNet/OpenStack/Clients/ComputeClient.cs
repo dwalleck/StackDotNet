@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using StackDotNet.OpenStack.Models.Compute;
-using StackDotNet.OpenStack.Models.Compute.Requests;
 using Newtonsoft.Json;
 
 namespace StackDotNet.OpenStack.Clients
