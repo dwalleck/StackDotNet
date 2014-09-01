@@ -58,6 +58,7 @@
     <Compile Include="OpenStack\Models\Compute\CreateImageRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\CreateServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\RebootServerRequest.cs" />
+    <Compile Include="OpenStack\Models\Compute\RebuildServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\ResizeServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\RevertResizeRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\UpdateServerRequest.cs" />

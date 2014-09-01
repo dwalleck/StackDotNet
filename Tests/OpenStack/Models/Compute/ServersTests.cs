@@ -83,5 +83,69 @@ namespace Tests
 
             Assert.AreEqual(response.Server.Flavor.Id, "1");
         }
+
+        [TestMethod]
+        public void TestCreateServerRequest()
+        {
+            var request = new CreateServerRequest("testserver", "42", "1");
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""server"":{""name"":""testserver"",""imageRef"":""42"",""flavorRef"":""1""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestCreateImageFromServerRequest()
+        {
+            var request = new CreateImageRequest("testimage");
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""createImage"":{""name"":""testimage""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestRebootServerRequest()
+        {
+            var request = new RebootServerRequest("HARD");
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""reboot"":{""type"":""HARD""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestChangePasswordRequest()
+        {
+            var request = new ChangePasswordRequest("newPassword");
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""changePassword"":{""adminPass"":""newPassword""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestUpdateServerRequest()
+        {
+            var request = new UpdateServerRequest("newName", "192.168.1.5", "3ffe:1900:4545:3:200:f8ff:fe21:67cf");
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""server"":{""name"":""newName"",""accessIPv4"":""192.168.1.5"",""accessIPv6"":""3ffe:1900:4545:3:200:f8ff:fe21:67cf""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestConfirmResizeRequest()
+        {
+            var request = new ConfirmResizeRequest();
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""confirmResize"":null}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestRevertResizeRequest()
+        {
+            var request = new RevertResizeRequest();
+            var serializedRequest = JsonConvert.SerializeObject(request);
+            var expectedContent = @"{""revertResize"":null}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
     }
 }

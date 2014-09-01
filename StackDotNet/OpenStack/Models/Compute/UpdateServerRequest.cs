@@ -10,6 +10,7 @@ namespace StackDotNet.OpenStack.Models.Compute
     
     public class UpdateServerRequest
     {
+        [JsonProperty(PropertyName = "server")]
         public UpdateServerContent RequestContent { get; set; }
 
         public UpdateServerRequest(string name, string accessIPv4, string accessIPv6)
