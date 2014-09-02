@@ -39,9 +39,9 @@ namespace StackDotNet.OpenStack.Clients
 
         Task ChangeServerPassword(string serverId, string newPassword);
 
-        Task RebootServer(string serverId);
+        Task RebootServer(string serverId, string type);
 
-        Task<Server> RebuildServer(string serverId);
+        Task<Server> RebuildServer(string serverId, string name, string imageId);
 
         Task ResizeServer(string serverId, string newFlavor);
 

@@ -79,6 +79,9 @@ namespace Tests
             Assert.AreEqual(response.Server.AccessIPv4, "10.1.1.4");
             Assert.AreEqual(response.Server.AccessIPv6, "3ffe:1900:4545:3:200:f8ff:fe21:67cf");
 
+            Assert.IsTrue(response.Server.Metadata.ContainsKey("key1"));
+            Assert.AreEqual(response.Server.Metadata["key1"], "value1");
+
             Assert.AreEqual(response.Server.Image.Id, "42");
 
             Assert.AreEqual(response.Server.Flavor.Id, "1");

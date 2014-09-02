@@ -59,9 +59,4 @@ namespace StackDotNet.OpenStack.Models.Compute
         public Image Image { get; set; }
     }
 
-    public class Metadata
-    {
-
-    }
-
 }

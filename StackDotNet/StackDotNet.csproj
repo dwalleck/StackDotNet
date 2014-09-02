@@ -41,6 +41,7 @@
     <Compile Include="OpenStack\Clients\ObjectStorageClient.cs" />
     <Compile Include="OpenStack\Models\BlockStorage\Volumes.cs" />
     <Compile Include="OpenStack\Models\Compute\Common\Link.cs" />
+    <Compile Include="OpenStack\Models\Compute\Common\Metadata.cs" />
     <Compile Include="OpenStack\Models\Compute\Extensions\AdminActions\AssignFloatingIPRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\Extensions\AdminActions\LiveMigrateServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\Extensions\AdminActions\LockServerRequest.cs" />

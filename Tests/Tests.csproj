@@ -57,7 +57,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="OpenStack\Models\Compute\ImagesTests.cs" />
     <Compile Include="OpenStack\Models\Compute\ServersTests.cs" />
+    <Compile Include="OpenStack\Models\Compute\FlavorsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

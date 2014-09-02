@@ -78,9 +78,14 @@ namespace StackDotNet.OpenStack.Clients
             return serverResponse.Server;
         }
 
-        public async Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6)
+        public async Task<Server> UpdateServer(string serverId, string name, string accessIPv4, string accessIPv6)
         {
-            throw new NotImplementedException();
+            UpdateServerRequest requestBody = new UpdateServerRequest(name, accessIPv4, accessIPv6);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, BaseUrl + "/servers/" + serverId);
+            HttpResponseMessage response = await Client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            ServerResponse serverResponse = JsonConvert.DeserializeObject<ServerResponse>(responseBody);
+            return serverResponse.Server;
         }
 
         public async void GetServerMetadata(string serverId)
@@ -115,32 +120,53 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task ChangeServerPassword(string serverId, string newPassword)
         {
-            throw new NotImplementedException();
+            ChangePasswordRequest requestBody = new ChangePasswordRequest(newPassword);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
         }
 
-        public async Task RebootServer(string serverId)
+        public async Task RebootServer(string serverId, string type)
         {
-            throw new NotImplementedException();
+            RebootServerRequest requestBody = new RebootServerRequest(type);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
         }
 
-        public async Task<Server> RebuildServer(string serverId)
+        public async Task<Server> RebuildServer(string serverId, string name, string imageId)
         {
-            throw new NotImplementedException();
+            RebuildServerRequest requestBody = new RebuildServerRequest(name, imageId);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            ServerResponse serverResponse = JsonConvert.DeserializeObject<ServerResponse>(responseBody);
+            return serverResponse.Server;
         }
 
         public async Task ResizeServer(string serverId, string newFlavor)
         {
-            throw new NotImplementedException();
+            ResizeServerRequest requestBody = new ResizeServerRequest(newFlavor);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
         }
 
         public async Task ConfirmServerResize(string serverId)
         {
-            throw new NotImplementedException();
+            ConfirmResizeRequest requestBody = new ConfirmResizeRequest();
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
         }
 
         public async Task RevertServerResize(string serverId)
         {
-            throw new NotImplementedException();
+            RevertResizeRequest requestBody = new RevertResizeRequest();
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/action", request);
         }
 
         public async Task<string> CreateImage(string serverId, string name)
