@@ -152,7 +152,7 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task DeleteServerMetadataItem(string serverId, string key)
         {
-            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/servers/" + serverId + "/metadata" + key);
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/servers/" + serverId + "/metadata/" + key);
             response.EnsureSuccessStatusCode();
         }
 
@@ -340,7 +340,7 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task DeleteImageMetadataItem(string imageId, string key)
         {
-            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/images/" + imageId + "/metadata" + key);
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/images/" + imageId + "/metadata/" + key);
             response.EnsureSuccessStatusCode();
         }
 

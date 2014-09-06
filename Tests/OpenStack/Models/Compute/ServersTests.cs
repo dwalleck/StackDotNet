@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ServersTests
     {
         [TestMethod]
         public void TestServerResponse()
