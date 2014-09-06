@@ -1,4 +1,5 @@
 ﻿using StackDotNet.OpenStack.Models.Compute;
+using StackDotNet.OpenStack.Models.Compute.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,19 @@ namespace StackDotNet.OpenStack.Clients
 
         Task<Server> CreateServer(string name, string imageId, string flavorId);
 
-        Task<Server> UpdateServer(string name, string accessIPv4, string accessIPv6);
+        Task<Server> UpdateServer(string serverId, string name, string accessIPv4, string accessIPv6);
 
-        void GetServerMetadata(string serverId);
+        Task<Metadata> GetServerMetadata(string serverId);
 
-        void SetServerMetadata(string serverId);
+        Task<Metadata> SetServerMetadata(string serverId, Metadata metadata);
 
-        void UpdateServerMetadata(string serverId);
+        Task<Metadata> UpdateServerMetadata(string serverId, Metadata metadata);
 
-        void GetServerMetadataItem(string serverId);
+        Task<Metadata> GetServerMetadataItem(string serverId, string key);
 
-        void SetServerMetadataItem(string serverId);
+        Task<Metadata> SetServerMetadataItem(string serverId, string key, string value);
 
-        Task DeleteServerMetadataItem(string serverId);
+        Task DeleteServerMetadataItem(string serverId, string key);
 
         Task ChangeServerPassword(string serverId, string newPassword);
 
@@ -73,17 +74,17 @@ namespace StackDotNet.OpenStack.Clients
 
         Task<Image> GetImage(string imageId);
 
-        void GetImageMetadata(string imageId);
+        Task<Metadata> GetImageMetadata(string imageId);
 
-        void SetImageMetadata(string imageId);
+        Task<Metadata> SetImageMetadata(string imageId, Metadata metadata);
 
-        void UpdateImageMetadata(string imageId);
+        Task<Metadata> UpdateImageMetadata(string imageId, Metadata metadata);
 
-        void GetImageMetadataItem(string imageId);
+        Task<Metadata> GetImageMetadataItem(string imageId, string key);
 
-        void SetImageMetadataItem(string imageId);
+        Task<Metadata> SetImageMetadataItem(string imageId, string key, string value);
 
-        Task DeleteImageMetadataItem(string imageId);
+        Task DeleteImageMetadataItem(string imageId, string key);
 
         #endregion
     }

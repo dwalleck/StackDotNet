@@ -11,6 +11,7 @@ using StackDotNet.OpenStack.Models.Identity;
 using StackDotNet.CommandLine.Properties;
 using StackDotNet.ThirdParty.Rackspace.Clients;
 using System.Threading;
+using StackDotNet.OpenStack.Models.Compute.Common;
 
 namespace StackDotNet.CommandLine
 {
@@ -20,9 +21,34 @@ namespace StackDotNet.CommandLine
         static void Main(string[] args)
         {
             var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
-            var access_response = identityClient.Authenticate("", "", "");
+            var access_response = identityClient.Authenticate("qeuser1", "64de43be5b024361b0425196450345a6", "658803");
             var access = access_response.Result;
-            var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "SYD").PublicUrl, access.Token.Id);
+            var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
+
+            var server = computeClient.CreateServer("csharptest", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e", "performance1-1").Result;
+
+            Console.WriteLine("Created server " + server.Id);
+
+            while (server.Status != "ACTIVE")
+            {
+                server = computeClient.GetServer(server.Id).Result;
+                Console.WriteLine("Status: " + server.Status);
+                Console.WriteLine("Progress: " + server.Progress);
+                Thread.Sleep(15000);
+
+            }
+
+            Metadata metadata = new Metadata()
+            {
+                {"key1", "value1"},
+                {"key12", "value12"},
+            };
+            var meta = computeClient.UpdateServerMetadata(server.Id, metadata).Result;
+
+            server = computeClient.GetServer(server.Id).Result;
+            var response = computeClient.DeleteServer(server.Id);
+            response.Wait();
+
             /*BastionContext Context = new BastionContext();
 
             var images = Context.Images.FindAll();

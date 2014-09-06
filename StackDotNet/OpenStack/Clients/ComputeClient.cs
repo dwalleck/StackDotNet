@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using StackDotNet.OpenStack.Models.Compute;
+using StackDotNet.OpenStack.Models.Compute.Common;
 using Newtonsoft.Json;
 
 namespace StackDotNet.OpenStack.Clients
@@ -81,41 +82,78 @@ namespace StackDotNet.OpenStack.Clients
         public async Task<Server> UpdateServer(string serverId, string name, string accessIPv4, string accessIPv6)
         {
             UpdateServerRequest requestBody = new UpdateServerRequest(name, accessIPv4, accessIPv6);
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, BaseUrl + "/servers/" + serverId);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var serialized_content = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, BaseUrl + "/servers/" + serverId);
+            request.Content = serialized_content;
             HttpResponseMessage response = await Client.SendAsync(request);
             var responseBody = await response.Content.ReadAsStringAsync();
             ServerResponse serverResponse = JsonConvert.DeserializeObject<ServerResponse>(responseBody);
             return serverResponse.Server;
         }
 
-        public async void GetServerMetadata(string serverId)
+        public async Task<Metadata> GetServerMetadata(string serverId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId + "/metadata");
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadata_response = JsonConvert.DeserializeObject<MetadataTransaction>(response_body);
+            return metadata_response.Metadata;
         }
 
-        public async void SetServerMetadata(string serverId)
+        public async Task<Metadata> SetServerMetadata(string serverId, Metadata metadata)
         {
-            throw new NotImplementedException();
+            MetadataTransaction requestBody = new MetadataTransaction(metadata);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers/" + serverId + "/metadata", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async void UpdateServerMetadata(string serverId)
+        public async Task<Metadata> UpdateServerMetadata(string serverId, Metadata metadata)
         {
-            throw new NotImplementedException();
+            MetadataTransaction requestBody = new MetadataTransaction(metadata);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var serialized_content = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, BaseUrl + "/servers/" + serverId + "/metadata");
+            request.Content = serialized_content;
+            HttpResponseMessage response = await Client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async void GetServerMetadataItem(string serverId)
+        public async Task<Metadata> GetServerMetadataItem(string serverId, string key)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId + "/metadata/" + key);
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadata_response = JsonConvert.DeserializeObject<MetadataTransaction>(response_body);
+            return metadata_response.Metadata;
         }
 
-        public async void SetServerMetadataItem(string serverId)
+        public async Task<Metadata> SetServerMetadataItem(string serverId, string key, string value)
         {
-            throw new NotImplementedException();
+            Metadata requestBody = new Metadata()
+            {
+                {key, value}
+            };
+            var content = JsonConvert.SerializeObject(requestBody);
+            var serialized_content = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, BaseUrl + "/servers/" + serverId + "/metadata/" + key);
+            request.Content = serialized_content;
+            HttpResponseMessage response = await Client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async Task DeleteServerMetadataItem(string serverId)
+        public async Task DeleteServerMetadataItem(string serverId, string key)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/servers/" + serverId + "/metadata" + key);
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task ChangeServerPassword(string serverId, string newPassword)
@@ -230,7 +268,8 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task DeleteImage(string imageId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/images/" + imageId);
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task<Image> GetImage(string imageId)
@@ -241,34 +280,68 @@ namespace StackDotNet.OpenStack.Clients
             return image_response.Image;
         }
 
-        public async void GetImageMetadata(string imageId)
+        public async Task<Metadata> GetImageMetadata(string imageId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/" + imageId + "/metadata");
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadata_response = JsonConvert.DeserializeObject<MetadataTransaction>(response_body);
+            return metadata_response.Metadata;
         }
 
-        public async void SetImageMetadata(string imageId)
+        public async Task<Metadata> SetImageMetadata(string imageId, Metadata metadata)
         {
-            throw new NotImplementedException();
+            MetadataTransaction requestBody = new MetadataTransaction(metadata);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/images/" + imageId + "/metadata", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async void UpdateImageMetadata(string imageId)
+        public async Task<Metadata> UpdateImageMetadata(string imageId, Metadata metadata)
         {
-            throw new NotImplementedException();
+            MetadataTransaction requestBody = new MetadataTransaction(metadata);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var serialized_content = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, BaseUrl + "/images/" + imageId + "/metadata");
+            request.Content = serialized_content;
+            HttpResponseMessage response = await Client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async void GetImageMetadataItem(string imageId)
+        public async Task<Metadata> GetImageMetadataItem(string imageId, string key)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/" + imageId + "/metadata/" + key);
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadata_response = JsonConvert.DeserializeObject<MetadataTransaction>(response_body);
+            return metadata_response.Metadata;
         }
 
-        public async void SetImageMetadataItem(string imageId)
+        public async Task<Metadata> SetImageMetadataItem(string imageId, string key, string value)
         {
-            throw new NotImplementedException();
+            Metadata requestBody = new Metadata()
+            {
+                {key, value}
+            };
+            var content = JsonConvert.SerializeObject(requestBody);
+            var serialized_content = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, BaseUrl + "/images/" + imageId + "/metadata/" + key);
+            request.Content = serialized_content;
+            HttpResponseMessage response = await Client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            MetadataTransaction metadataResponse = JsonConvert.DeserializeObject<MetadataTransaction>(responseBody);
+            return metadataResponse.Metadata;
         }
 
-        public async Task DeleteImageMetadataItem(string imageId)
+        public async Task DeleteImageMetadataItem(string imageId, string key)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/images/" + imageId + "/metadata" + key);
+            response.EnsureSuccessStatusCode();
         }
 
         #endregion
