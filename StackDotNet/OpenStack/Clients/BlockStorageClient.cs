@@ -31,5 +31,31 @@ namespace StackDotNet.OpenStack.Clients
             return volumes_response.Volumes;
         }
 
+        public async Task<Volume> CreateVolume(int size, string volumeType, string imageId)
+        {
+            CreateVolumeRequest requestBody = new CreateVolumeRequest(size, volumeType, imageId);
+            var content = JsonConvert.SerializeObject(requestBody);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/volumes", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            VolumeResponse volumeResponse = JsonConvert.DeserializeObject<VolumeResponse>(responseBody);
+            return volumeResponse.Volume;
+        }
+
+        public async Task<Volume> GetVolume(string volumeId)
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/volumes/" + volumeId);
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            VolumeResponse volume_response = JsonConvert.DeserializeObject<VolumeResponse>(response_body);
+            return volume_response.Volume;
+        }
+
+        public async Task DeleteVolume(string volumeId)
+        {
+            HttpResponseMessage response = await Client.DeleteAsync(BaseUrl + "/volumes/" + volumeId);
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }

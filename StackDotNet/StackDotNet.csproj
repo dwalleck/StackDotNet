@@ -39,6 +39,7 @@
     <Compile Include="OpenStack\Clients\IComputeClient.cs" />
     <Compile Include="OpenStack\Clients\IdentityClient.cs" />
     <Compile Include="OpenStack\Clients\ObjectStorageClient.cs" />
+    <Compile Include="OpenStack\Models\BlockStorage\CreateVolumeRequest.cs" />
     <Compile Include="OpenStack\Models\BlockStorage\Volumes.cs" />
     <Compile Include="OpenStack\Models\Compute\Common\Link.cs" />
     <Compile Include="OpenStack\Models\Compute\Common\Metadata.cs" />

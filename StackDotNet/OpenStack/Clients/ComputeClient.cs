@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StackDotNet.OpenStack.Models.Compute;
 using StackDotNet.OpenStack.Models.Compute.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace StackDotNet.OpenStack.Clients
 {
@@ -68,10 +69,14 @@ namespace StackDotNet.OpenStack.Clients
             return addresses_response.Addresses;
         }
 
-        public async Task<Server> CreateServer(string name, string imageId, string flavorId)
+        public async Task<Server> CreateServer(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDevice = null)
         {
-            CreateServerRequest requestBody = new CreateServerRequest(name, imageId, flavorId);
-            var content = JsonConvert.SerializeObject(requestBody);
+            CreateServerRequest requestBody = new CreateServerRequest(name, flavorId, imageId: imageId, blockDeviceMapping: blockDevice);
+            var content = JsonConvert.SerializeObject(
+                requestBody, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
             var request = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/servers", request);
             var responseBody = await response.Content.ReadAsStringAsync();
@@ -262,7 +267,15 @@ namespace StackDotNet.OpenStack.Clients
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail");
             var response_body = await response.Content.ReadAsStringAsync();
-            ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(response_body);
+            ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(
+                response_body,
+                new JsonSerializerSettings
+                {
+                    Error = delegate(object sender, ErrorEventArgs args)
+                    {
+                        args.ErrorContext.Handled = true;
+                    }
+                });
             return images_response.Images;
         }
 

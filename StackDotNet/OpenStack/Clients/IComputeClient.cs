@@ -22,7 +22,7 @@ namespace StackDotNet.OpenStack.Clients
 
         Task<Addresses> ListServerAddresses(string serverId);
 
-        Task<Server> CreateServer(string name, string imageId, string flavorId);
+        Task<Server> CreateServer(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDevice = null);
 
         Task<Server> UpdateServer(string serverId, string name, string accessIPv4, string accessIPv6);
 

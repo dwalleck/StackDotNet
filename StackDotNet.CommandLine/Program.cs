@@ -12,6 +12,7 @@ using StackDotNet.CommandLine.Properties;
 using StackDotNet.ThirdParty.Rackspace.Clients;
 using System.Threading;
 using StackDotNet.OpenStack.Models.Compute.Common;
+using System.Diagnostics;
 
 namespace StackDotNet.CommandLine
 {
@@ -23,9 +24,64 @@ namespace StackDotNet.CommandLine
             var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
             var access_response = identityClient.Authenticate("", "", "");
             var access = access_response.Result;
+            
             var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
 
-            var server = computeClient.CreateServer("csharptest", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e", "performance1-1").Result;
+            var baseImages = computeClient.ListImagesDetailed().Result;
+
+            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
+            var volume = blockStorageClient.CreateVolume(100, "SATA", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e").Result;
+
+            while (volume.Status != "available")
+            {
+                volume = blockStorageClient.GetVolume(volume.Id).Result;
+                Console.WriteLine("Status: " + volume.Status);
+                Thread.Sleep(15000);
+
+            }
+
+            BlockDeviceMapping device = new BlockDeviceMapping
+            {
+                Size = 100,
+                DeviceName = "vda",
+                Type = "",
+                DeleteOnTermination = true,
+                VolumeId = volume.Id
+            };
+
+            var server = computeClient.CreateServer("csharptest", "compute1-4", blockDevice: device).Result;
+
+            Console.WriteLine("Created server " + server.Id);
+
+            while (server.Status != "ACTIVE")
+            {
+                server = computeClient.GetServer(server.Id).Result;
+                Console.WriteLine("Status: " + server.Status);
+                Console.WriteLine("Progress: " + server.Progress);
+                Thread.Sleep(15000);
+
+            }
+
+            var response = computeClient.DeleteServer(server.Id);
+            response.Wait();
+
+
+            /*BastionContext Context = new BastionContext();
+            var images = Context.Images.FindAll();
+
+            foreach (var image in images)
+            {
+                Console.WriteLine(image.Name);
+                if (image.Actions.Create.Results.Count > 0)
+                {
+                    Console.WriteLine("Average build time: " + image.Actions.Create.Results.Average(i => i.ActionTime));
+                    Console.WriteLine("Min build time: " + image.Actions.Create.Results.Min(i => i.ActionTime));
+                    Console.WriteLine("Max build time: " + image.Actions.Create.Results.Max(i => i.ActionTime));
+                }
+                
+            }*/
+
+            /*var server = computeClient.CreateServer("csharptest", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e", "performance1-1").Result;
 
             Console.WriteLine("Created server " + server.Id);
 
@@ -45,9 +101,79 @@ namespace StackDotNet.CommandLine
             };
             var meta = computeClient.UpdateServerMetadata(server.Id, metadata).Result;
 
-            server = computeClient.GetServer(server.Id).Result;
+            server = computeClient.GetServer(server.Id).Result; 
+            
+            
+            
+            
             var response = computeClient.DeleteServer(server.Id);
-            response.Wait();
+            response.Wait();*/
+
+            
+
+            //var flavors = computeClient.ListFlavorsDetailed().Result;
+            /*var baseImages = computeClient.ListImagesDetailed().Result;
+
+            var filteredImages = baseImages.Where(
+                i =>  i.Metadata["image_type"] != "snapshot");
+
+
+            foreach (var image in baseImages)
+            {
+                var img = new Image();
+                img.Name = image.Name;
+                img.Uuid = image.Id;
+                img.Region = "IAD";
+                Context.Images.Insert(img);
+            }*/
+            
+
+            
+            /*
+            var filteredImages = images.Where(
+                i => !i.Name.Contains("OnMetal") &&
+                    !i.Name.Contains("Windows"));
+
+            var standardFlavors = flavors.Where(f => f.Name.Contains("Performance"));
+
+            Parallel.ForEach(filteredImages, new ParallelOptions { MaxDegreeOfParallelism = 5 }, image =>
+            {
+                standardFlavors.OrderBy(f => f.Ram);
+                var i = computeClient.GetImage(image.Uuid).Result;
+                var flavor = standardFlavors.Where(f => f.Ram >= i.MinRam).First();
+                var server = computeClient.CreateServer("server" + "-" + i.Id, i.Id, flavor.Id).Result;
+                var retries = 0;
+
+                var watch = Stopwatch.StartNew();
+
+                bool passed = true;
+                while (server.Status != "ACTIVE")
+                {
+                    if (retries > 100)
+                    {
+                        passed = false;
+                        break;
+                    }
+                    server = computeClient.GetServer(server.Id).Result;
+                    Console.WriteLine("Status: " + server.Status);
+                    Console.WriteLine("Progress: " + server.Progress);
+                    Thread.Sleep(15000);
+                    retries++;
+                }
+
+                watch.Stop();
+
+                ActionResult r = new ActionResult();
+                r.ActionTime = watch.Elapsed.TotalSeconds;
+                r.WasSuccessful = passed;
+                image.Actions.Create.Results.Add(r);
+                Context.Images.Save(image);
+
+                var response = computeClient.DeleteServer(server.Id);
+                response.Wait();
+            });*/
+
+
 
             /*BastionContext Context = new BastionContext();
 
@@ -264,6 +390,7 @@ namespace StackDotNet.CommandLine
             var objectStorageClient = new ObjectStorageClient(access.GetEndpoint("cloudFiles", "DFW").PublicUrl, access.Token.Id);
             var accountMeta = objectStorageClient.GetAccountMetadata().Result;
             Console.WriteLine(accountMeta.BytesUsed);*/
+            Console.ReadLine();
 
         }
     }

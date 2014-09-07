@@ -90,9 +90,34 @@ namespace Tests
         [TestMethod]
         public void TestCreateServerRequest()
         {
-            var request = new CreateServerRequest("testserver", "42", "1");
-            var serializedRequest = JsonConvert.SerializeObject(request);
+            var request = new CreateServerRequest("testserver", "1", "42");
+            var serializedRequest = JsonConvert.SerializeObject(
+                request, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
             var expectedContent = @"{""server"":{""name"":""testserver"",""imageRef"":""42"",""flavorRef"":""1""}}";
+            Assert.AreEqual(serializedRequest, expectedContent);
+        }
+
+        [TestMethod]
+        public void TestCreateServerFromVolumeRequest()
+        {
+            BlockDeviceMapping device = new BlockDeviceMapping
+            {
+                Size = 100,
+                DeviceName = "vda",
+                Type = "",
+                DeleteOnTermination = true,
+                VolumeId = "12345"
+            };
+            var request = new CreateServerRequest("testserver", "1", blockDeviceMapping: device);
+            var serializedRequest = JsonConvert.SerializeObject(
+                request, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+            var expectedContent = @"{""server"":{""name"":""testserver"",""flavorRef"":""1"",""block_device_mapping"":[{""size"":100,""device_name"":""vda"",""type"":"""",""delete_on_termination"":true,""volume_id"":""12345""}]}}";
             Assert.AreEqual(serializedRequest, expectedContent);
         }
 

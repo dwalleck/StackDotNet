@@ -68,6 +68,12 @@ namespace StackDotNet.OpenStack.Models.BlockStorage
         public List<Volume> Volumes { get; set; }
     }
 
+    public class VolumeResponse
+    {
+        [JsonProperty(PropertyName = "volume")]
+        public Volume Volume { get; set; }
+    }
+
 
     public class Metadata
     {
