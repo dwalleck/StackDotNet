@@ -265,7 +265,7 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task<List<Image>> ListImagesDetailed()
         {
-            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail");
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail?type=base");
             var response_body = await response.Content.ReadAsStringAsync();
             ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(
                 response_body,

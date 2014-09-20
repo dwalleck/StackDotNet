@@ -26,30 +26,238 @@ namespace StackDotNet.CommandLine
             var access = access_response.Result;
             
             var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
+            //var computeClient = new ComputeClient(admin_endpoint, access.Token.Id);
+            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
+            var networksClient = new CloudNetworksClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
 
+            var network = networksClient.CreateNetwork("192.168.2.0/24", "sharpnet").Result;
+            /*var networks = networksClient.ListNetworks().Result;
+
+            foreach (var network in networks)
+            {
+                if (network.Label == "private" || network.Label == "public")
+                {
+                    continue;
+                }
+                Console.WriteLine(network.Id);
+                try
+                {
+                    var response = networksClient.DeleteNetwork(network.Id);
+                    response.Wait();
+                }
+                catch
+                {
+                    Console.WriteLine("Failed to delete network " + network.Id);
+                }
+                
+                
+            }*/
+            
+            //BastionContext Context = new BastionContext();
+            //var images = Context.Images.FindAll();
+
+            /*var baseImages = computeClient.ListImagesDetailed().Result;
+
+            foreach (var image in baseImages)
+            {
+                var img = new Image();
+                img.Name = image.Name;
+                img.Uuid = image.Id;
+                img.Region = "DFW";
+                Context.Images.Insert(img);
+            }*/
+
+
+
+            /*foreach (var image in images)
+            {
+                if (image.Actions.Create.Results.Count > 0)
+                {
+                    foreach (var r in image.Actions.Create.Results)
+                    {
+                        if (!r.WasSuccessful)
+                        {
+                            r.ActionTime = 0;
+                        }
+                    }
+                    
+                    image.Actions.Create.AverageTime = image.Actions.Create.Results.Average(i => i.ActionTime);
+                    image.Actions.Create.MinTime = image.Actions.Create.Results.Min(i => i.ActionTime);
+                    image.Actions.Create.MaxTime = image.Actions.Create.Results.Max(i => i.ActionTime);
+                    Context.Images.Save(image);
+                }
+
+                if (image.Actions.CreateImage.Results.Count > 0)
+                {
+
+                    foreach (var r in image.Actions.CreateImage.Results)
+                    {
+                        if (!r.WasSuccessful)
+                        {
+                            r.ActionTime = 0;
+                        }
+                    }
+
+                    image.Actions.CreateImage.AverageTime = image.Actions.CreateImage.Results.Average(i => i.ActionTime);
+                    image.Actions.CreateImage.MinTime = image.Actions.CreateImage.Results.Min(i => i.ActionTime);
+                    image.Actions.CreateImage.MaxTime = image.Actions.CreateImage.Results.Max(i => i.ActionTime);
+                    Context.Images.Save(image);
+                }
+                
+            }*/
+
+            /* var flavors = computeClient.ListFlavorsDetailed().Result;
+
+            var filteredImages = images.Where(
+                i => !i.Name.Contains("OnMetal"));
+
+            var standardFlavors = flavors.Where(f => f.Id.Contains("performance"));
+
+        
+
+            Parallel.ForEach(filteredImages, new ParallelOptions { MaxDegreeOfParallelism = 5 }, image =>
+            {
+                standardFlavors.OrderBy(f => f.Ram);
+                var i = computeClient.GetImage(image.Uuid).Result; */
+
+                /*var volume = blockStorageClient.CreateVolume(100, "SATA", i.Id, "stackdotnet").Result;
+
+                var retries = 0;
+                var watch = Stopwatch.StartNew();
+                bool passed = true;
+                while (volume.Status != "available")
+                {
+                    if (retries > 100)
+                    {
+                        passed = false;
+                        break;
+                    }
+                    volume = blockStorageClient.GetVolume(volume.Id).Result;
+                    Console.WriteLine("Status: " + volume.Status);
+                    Thread.Sleep(15000);
+                    retries++;
+                }
+                watch.Stop();
+
+                ActionResult r = new ActionResult();
+                r.ActionTime = watch.Elapsed.TotalSeconds;
+                r.WasSuccessful = passed;
+                image.Actions.CreateBootableVolume.Results.Add(r);
+                Context.Images.Save(image);
+
+                // Build the server from volume
+                var flavor = standardFlavors.Where(f => f.Ram >= i.MinRam).First();
+
+                BlockDeviceMapping device = new BlockDeviceMapping
+                {
+                    Size = 100,
+                    DeviceName = "vda",
+                    Type = "",
+                    DeleteOnTermination = true,
+                    VolumeId = volume.Id
+                };
+
+                var server = computeClient.CreateServer("csharptest", "compute1-4", blockDevice: device).Result;
+                retries = 0;
+                watch = Stopwatch.StartNew();
+                passed = true;
+                while (server.Status != "ACTIVE")
+                {
+                    if (retries > 100)
+                    {
+                        passed = false;
+                        break;
+                    }
+                    server = computeClient.GetServer(server.Id).Result;
+                    Console.WriteLine("Status: " + server.Status);
+                    Console.WriteLine("Progress: " + server.Progress);
+                    Thread.Sleep(15000);
+                    retries++;
+                }
+                watch.Stop();
+
+                r = new ActionResult();
+                r.ActionTime = watch.Elapsed.TotalSeconds;
+                r.WasSuccessful = passed;
+                image.Actions.CreateFromVolume.Results.Add(r);
+                Context.Images.Save(image); */
+
+                /* standardFlavors.OrderBy(f => f.Ram);
+                var flavor = standardFlavors.Where(f => f.Ram >= i.MinRam && f.Disk >= i.MinDisk).First();
+
+                var server = computeClient.CreateServer("test-" + i.Id, flavor.Id, imageId: i.Id).Result;
+                var retries = 0;
+                var watch = Stopwatch.StartNew();
+                var passed = true;
+                while (server.Status != "ACTIVE")
+                {
+                    if (retries > 960 || server.Status == "ERROR")
+                    {
+                        passed = false;
+                        break;
+                    }
+                    server = computeClient.GetServer(server.Id).Result;
+                    Console.WriteLine("Status: " + server.Status);
+                    Console.WriteLine("Progress: " + server.Progress);
+                    Thread.Sleep(15000);
+                    retries++;
+                }
+                watch.Stop();
+
+                var r = new ActionResult();
+                r.ActionTime = watch.Elapsed.TotalSeconds;
+                r.WasSuccessful = passed;
+                image.Actions.Create.Results.Add(r);
+                Context.Images.Save(image);
+
+                if (passed)
+                {
+                    var imageId = computeClient.CreateImage(server.Id, "snapshot-" + i.Id).Result;
+                    var snapshot = computeClient.GetImage(imageId).Result;
+
+                    retries = 0;
+                    passed = true;
+                    watch = Stopwatch.StartNew();
+                    while (snapshot.Status != "ACTIVE")
+                    {
+                        if (retries > 960 || snapshot.Status == "ERROR" || snapshot.Status == "DELETED")
+                        {
+                            passed = false;
+                            break;
+                        }
+                        snapshot = computeClient.GetImage(imageId).Result;
+                        Console.WriteLine("Status: " + snapshot.Status);
+                        Console.WriteLine("Progress: " + snapshot.Progress);
+                        Thread.Sleep(15000);
+                        retries++;
+
+                    }
+                    watch.Stop();
+
+                    r = new ActionResult();
+                    r.ActionTime = watch.Elapsed.TotalSeconds;
+                    r.WasSuccessful = passed;
+                    image.Actions.CreateImage.Results.Add(r);
+                    Context.Images.Save(image);
+
+                    var image_del_response = computeClient.DeleteImage(snapshot.Id);
+                    image_del_response.Wait();
+                }
+
+                var response = computeClient.DeleteServer(server.Id);
+                response.Wait();
+
+                
+            }); */
+
+
+            /*
             var baseImages = computeClient.ListImagesDetailed().Result;
 
-            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
-            var volume = blockStorageClient.CreateVolume(100, "SATA", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e").Result;
+            
+            
 
-            while (volume.Status != "available")
-            {
-                volume = blockStorageClient.GetVolume(volume.Id).Result;
-                Console.WriteLine("Status: " + volume.Status);
-                Thread.Sleep(15000);
-
-            }
-
-            BlockDeviceMapping device = new BlockDeviceMapping
-            {
-                Size = 100,
-                DeviceName = "vda",
-                Type = "",
-                DeleteOnTermination = true,
-                VolumeId = volume.Id
-            };
-
-            var server = computeClient.CreateServer("csharptest", "compute1-4", blockDevice: device).Result;
+            
 
             Console.WriteLine("Created server " + server.Id);
 
@@ -63,23 +271,10 @@ namespace StackDotNet.CommandLine
             }
 
             var response = computeClient.DeleteServer(server.Id);
-            response.Wait();
+            response.Wait();*/
 
 
-            /*BastionContext Context = new BastionContext();
-            var images = Context.Images.FindAll();
 
-            foreach (var image in images)
-            {
-                Console.WriteLine(image.Name);
-                if (image.Actions.Create.Results.Count > 0)
-                {
-                    Console.WriteLine("Average build time: " + image.Actions.Create.Results.Average(i => i.ActionTime));
-                    Console.WriteLine("Min build time: " + image.Actions.Create.Results.Min(i => i.ActionTime));
-                    Console.WriteLine("Max build time: " + image.Actions.Create.Results.Max(i => i.ActionTime));
-                }
-                
-            }*/
 
             /*var server = computeClient.CreateServer("csharptest", "ffd597d6-2cc4-4b43-b8f4-b1006715b84e", "performance1-1").Result;
 
@@ -111,70 +306,12 @@ namespace StackDotNet.CommandLine
 
             
 
-            //var flavors = computeClient.ListFlavorsDetailed().Result;
-            /*var baseImages = computeClient.ListImagesDetailed().Result;
-
-            var filteredImages = baseImages.Where(
-                i =>  i.Metadata["image_type"] != "snapshot");
-
-
-            foreach (var image in baseImages)
-            {
-                var img = new Image();
-                img.Name = image.Name;
-                img.Uuid = image.Id;
-                img.Region = "IAD";
-                Context.Images.Insert(img);
-            }*/
+            //
+            /**/
             
 
             
-            /*
-            var filteredImages = images.Where(
-                i => !i.Name.Contains("OnMetal") &&
-                    !i.Name.Contains("Windows"));
-
-            var standardFlavors = flavors.Where(f => f.Name.Contains("Performance"));
-
-            Parallel.ForEach(filteredImages, new ParallelOptions { MaxDegreeOfParallelism = 5 }, image =>
-            {
-                standardFlavors.OrderBy(f => f.Ram);
-                var i = computeClient.GetImage(image.Uuid).Result;
-                var flavor = standardFlavors.Where(f => f.Ram >= i.MinRam).First();
-                var server = computeClient.CreateServer("server" + "-" + i.Id, i.Id, flavor.Id).Result;
-                var retries = 0;
-
-                var watch = Stopwatch.StartNew();
-
-                bool passed = true;
-                while (server.Status != "ACTIVE")
-                {
-                    if (retries > 100)
-                    {
-                        passed = false;
-                        break;
-                    }
-                    server = computeClient.GetServer(server.Id).Result;
-                    Console.WriteLine("Status: " + server.Status);
-                    Console.WriteLine("Progress: " + server.Progress);
-                    Thread.Sleep(15000);
-                    retries++;
-                }
-
-                watch.Stop();
-
-                ActionResult r = new ActionResult();
-                r.ActionTime = watch.Elapsed.TotalSeconds;
-                r.WasSuccessful = passed;
-                image.Actions.Create.Results.Add(r);
-                Context.Images.Save(image);
-
-                var response = computeClient.DeleteServer(server.Id);
-                response.Wait();
-            });*/
-
-
-
+           
             /*BastionContext Context = new BastionContext();
 
             var images = Context.Images.FindAll();

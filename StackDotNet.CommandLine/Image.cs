@@ -27,10 +27,14 @@ namespace StackDotNet.CommandLine
         {
             Create = new ActionResults();
             CreateImage = new ActionResults();
+            CreateBootableVolume = new ActionResults();
+            CreateFromVolume = new ActionResults();
         }
 
         public ActionResults Create { get; set; }
         public ActionResults CreateImage { get; set; }
+        public ActionResults CreateBootableVolume { get; set; }
+        public ActionResults CreateFromVolume { get; set; }
     }
 
     public class ActionResults
@@ -42,6 +46,9 @@ namespace StackDotNet.CommandLine
         }
         
         public List<ActionResult> Results { get; set; }
+        public double MinTime { get; set; }
+        public double MaxTime { get; set; }
+        public double AverageTime { get; set; }
     }
 
     public class ActionResult

@@ -31,9 +31,9 @@ namespace StackDotNet.OpenStack.Clients
             return volumes_response.Volumes;
         }
 
-        public async Task<Volume> CreateVolume(int size, string volumeType, string imageId)
+        public async Task<Volume> CreateVolume(int size, string volumeType, string imageId, string name)
         {
-            CreateVolumeRequest requestBody = new CreateVolumeRequest(size, volumeType, imageId);
+            CreateVolumeRequest requestBody = new CreateVolumeRequest(size, volumeType, imageId, name);
             var content = JsonConvert.SerializeObject(requestBody);
             var request = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/volumes", request);

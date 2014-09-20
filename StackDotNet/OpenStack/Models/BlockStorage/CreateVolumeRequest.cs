@@ -12,13 +12,14 @@ namespace StackDotNet.OpenStack.Models.BlockStorage
         [JsonProperty(PropertyName = "volume")]
         public CreateVolumeContent RequestContent { get; set; }
 
-        public CreateVolumeRequest(int size, string volumeType, string imageId)
+        public CreateVolumeRequest(int size, string volumeType, string imageId, string name)
         {
             RequestContent = new CreateVolumeContent
             {
                 Size = size,
                 VolumeType = volumeType,
-                ImageRef = imageId
+                ImageRef = imageId,
+                Name = name
             };
         }
     }
@@ -33,5 +34,8 @@ namespace StackDotNet.OpenStack.Models.BlockStorage
 
         [JsonProperty(PropertyName = "imageRef")]
         public string ImageRef { get; set; }
+
+        [JsonProperty(PropertyName = "display_name")]
+        public string Name { get; set; }
     }
 }
