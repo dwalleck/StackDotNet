@@ -224,6 +224,15 @@ namespace StackDotNet.OpenStack.Clients
             return imageId;
         }
 
+        public async Task<List<InstanceAction>> ListInstanceActions(string serverId)
+        {
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers/" + serverId + "/os-instance-actions");
+            response.EnsureSuccessStatusCode();
+            var response_body = await response.Content.ReadAsStringAsync();
+            ListInstanceActionsResponse actions_response = JsonConvert.DeserializeObject<ListInstanceActionsResponse>(response_body);
+            return actions_response.InstanceActions;
+        }
+
         #endregion
 
         #region Flavors
@@ -265,7 +274,7 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task<List<Image>> ListImagesDetailed()
         {
-            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail?type=base");
+            HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/images/detail");
             var response_body = await response.Content.ReadAsStringAsync();
             ListImagesResponse images_response = JsonConvert.DeserializeObject<ListImagesResponse>(
                 response_body,

@@ -52,6 +52,8 @@ namespace StackDotNet.OpenStack.Clients
 
         Task<string> CreateImage(string serverId, string name);
 
+        Task<List<InstanceAction>> ListInstanceActions(string serverId);
+
         #endregion
 
         #region Flavors

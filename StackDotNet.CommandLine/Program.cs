@@ -24,13 +24,127 @@ namespace StackDotNet.CommandLine
             var identityClient = new CloudIdentityClient("https://identity.api.rackspacecloud.com");
             var access_response = identityClient.Authenticate("", "", "");
             var access = access_response.Result;
-            
-            var computeClient = new ComputeClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
-            //var computeClient = new ComputeClient(admin_endpoint, access.Token.Id);
-            var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStorage", "IAD").PublicUrl, access.Token.Id);
-            var networksClient = new CloudNetworksClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
 
-            var network = networksClient.CreateNetwork("192.168.2.0/24", "sharpnet").Result;
+            var region = "SYD";
+            var endpoint = "cloudServersOpenStack";
+
+            var computeClient = new ComputeClient(access.GetEndpoint(endpoint, region).PublicUrl, access.Token.Id);
+
+            var images = computeClient.ListImages().Result;
+
+            foreach (var image in images)
+            {
+                Console.WriteLine(image.Name + " " + image.Id);
+            }
+            //var computeClient = new ComputeClient(admin_endpoint, access.Token.Id);
+            //var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStoragePreprod", "ORD").PublicUrl, access.Token.Id);
+            //var networksClient = new CloudNetworksClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);
+
+            /*var numberOfServers = 100;
+            var imageId = "042395fc-728c-4763-86f9-9b0cacb00701";
+            var image = computeClient.GetImage(imageId).Result;
+
+            List<ActionResult> results = new List<ActionResult>();
+
+            var totalWatch = Stopwatch.StartNew();
+            var timeouts = 0;
+            var errors = 0;
+            Parallel.For(0, numberOfServers, i =>
+            {
+                var reason = "";
+                var server = computeClient.CreateServer("csharptest", "2", imageId: imageId).Result;
+                var retries = 0;
+                var watch = Stopwatch.StartNew();
+                var passed = true;
+                while (server.Status != "ACTIVE")
+                {
+                    if (retries > 100 || server.Status == "ERROR")
+                    {
+                        if (server.Status == "ERROR")
+                        {
+                            if (server.Fault != null)
+                            {
+                                reason = server.Fault;
+                            }
+                            else
+                            {
+                                reason = "error";
+                            }
+                            errors++;
+                        }
+                        else
+                        {
+                            reason = "timeout";
+                            timeouts++;
+                        }
+                        passed = false;
+                        break;
+                    }
+                    server = computeClient.GetServer(server.Id).Result;
+                    Console.WriteLine("Server: " + server.Id);
+                    Console.WriteLine("Status: " + server.Status);
+                    Console.WriteLine("Progress: " + server.Progress);
+                    Thread.Sleep(15000);
+                    retries++;
+                }
+                watch.Stop();
+
+                var actions = computeClient.ListInstanceActions(server.Id).Result;
+                var action = actions.Where(a => a.Action.Equals("create")).FirstOrDefault();
+                ActionResult r = new ActionResult();
+                r.ActionTime = watch.Elapsed.TotalSeconds;
+                r.WasSuccessful = passed;
+                r.ResourceId = server.Id;
+                r.FailureReason = reason;
+                if (action != null)
+                {
+                    r.CreationRequestId = action.RequestId;
+                }
+                results.Add(r);
+                if (passed)
+                {
+                    var response = computeClient.DeleteServer(server.Id);
+                    response.Wait();
+                }
+                
+            });
+            totalWatch.Stop();
+
+            ActionResults finalResults = new ActionResults();
+            finalResults.NumberOfServers = numberOfServers;
+            finalResults.Region = region;
+            finalResults.Endpoint = endpoint;
+            finalResults.ImageId = imageId;
+            finalResults.ImageName = image.Name;
+            finalResults.Results = results;
+            finalResults.TotalRunTime = totalWatch.Elapsed.TotalSeconds;
+            finalResults.MinTime = results.Min(i => i.ActionTime);
+            finalResults.MaxTime = results.Max(i => i.ActionTime);
+            finalResults.AverageTime = results.Average(i => i.ActionTime);
+            finalResults.SuccessRate = (results.Where(i => i.WasSuccessful).ToList().Count / Convert.ToDouble(numberOfServers)) * 100;
+            finalResults.ServerErrors = errors;
+            finalResults.Timeouts = timeouts;
+
+            BastionContext Context = new BastionContext();
+            var storedResults = Context.Results.FindAll();
+            Context.Results.Save(finalResults);
+
+            //Console.WriteLine(results.Count);
+            //Console.WriteLine(results.Where(i => i.WasSuccessful).ToList().Count);
+            //Console.WriteLine(results.Average(i => i.ActionTime));
+            //Console.WriteLine(results.Min(i => i.ActionTime));
+            //Console.WriteLine(results.Max(i => i.ActionTime));
+            //var volumes = blockStorageClient.ListVolumes().Result;*/
+
+            /*var servers = computeClient.ListServers().Result;
+
+            foreach (var server in servers)
+            {
+                Console.WriteLine(server.Id);
+                //Console.WriteLine(vol.Id);
+                //var resp = blockStorageClient.DeleteVolume(vol.Id);
+            }*/
+            //var network = networksClient.CreateNetwork("192.168.2.0/24", "sharpnet").Result;
             /*var networks = networksClient.ListNetworks().Result;
 
             foreach (var network in networks)

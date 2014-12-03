@@ -85,6 +85,9 @@ namespace StackDotNet.OpenStack.Models.Compute
         [JsonProperty(PropertyName = "OS-SRV-USG:launched_at")]
         public string LaunchedAt { get; set; }
 
+        [JsonProperty(PropertyName = "fault")]
+        public string Fault { get; set; }
+
     }
 
     public class Addresss

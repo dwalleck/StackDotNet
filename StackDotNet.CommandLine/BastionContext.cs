@@ -26,6 +26,14 @@ namespace StackDotNet.CommandLine
                 return Database.GetCollection<Image>("images");
             }
         }
+
+        public MongoCollection<ActionResults> Results
+        {
+            get
+            {
+                return Database.GetCollection<ActionResults>("results");
+            }
+        }
     }
 
 }
