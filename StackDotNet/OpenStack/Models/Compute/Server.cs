@@ -86,8 +86,20 @@ namespace StackDotNet.OpenStack.Models.Compute
         public string LaunchedAt { get; set; }
 
         [JsonProperty(PropertyName = "fault")]
-        public string Fault { get; set; }
+        public InstanceFault Fault { get; set; }
 
+    }
+
+    public class InstanceFault
+    {
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
+
+        [JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        [JsonProperty(PropertyName = "created")]
+        public DateTime CreatedAt { get; set; }
     }
 
     public class Addresss
