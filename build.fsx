@@ -68,7 +68,7 @@ Target "CreatePackage" (fun _ ->
             Version = version
             Dependencies = 
                 [
-                    ("Newtonsoft.Json", RequireExactly "6.0.6")
+                    ("Newtonsoft.Json", RequireExactly "6.0.8")
                     ("Microsoft.Net.Http", RequireExactly "2.2.28")
                     ("Microsoft.Bcl", RequireExactly "1.1.9")
                     ("Microsoft.Bcl.Build", RequireExactly "1.0.21")
