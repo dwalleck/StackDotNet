@@ -10,7 +10,7 @@ RestorePackages()
 let projectName = "StackDotNet"
 let projectDescription = "A C# SDK for interacting with OpenStack clouds."
 let projectSummary = projectDescription // TODO: write a summary
-let version = "0.2.0"
+let version = "0.2.1"
 let authors = ["Daryl Walleck"]
 
 // directories
