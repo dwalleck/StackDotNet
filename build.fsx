@@ -4,6 +4,8 @@ open Fake
 open System
 open System.IO
 
+RestorePackages()
+
 // project name and description
 let projectName = "StackDotNet"
 let projectDescription = "A C# SDK for interacting with OpenStack clouds."

@@ -32,10 +32,7 @@ namespace StackDotNet.CommandLine
 
             var images = computeClient.ListImages().Result;
 
-            foreach (var image in images)
-            {
-                Console.WriteLine(image.Name + " " + image.Id);
-            }
+            
             //var computeClient = new ComputeClient(admin_endpoint, access.Token.Id);
             //var blockStorageClient = new BlockStorageClient(access.GetEndpoint("cloudBlockStoragePreprod", "ORD").PublicUrl, access.Token.Id);
             //var networksClient = new CloudNetworksClient(access.GetEndpoint("cloudServersOpenStack", "IAD").PublicUrl, access.Token.Id);

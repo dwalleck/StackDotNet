@@ -31,6 +31,7 @@ namespace StackDotNet.OpenStack.Clients
         {
             HttpResponseMessage response = await Client.GetAsync(BaseUrl + "/servers");
             response.EnsureSuccessStatusCode();
+            
             var response_body = await response.Content.ReadAsStringAsync();
             ListServersResponse servers_response = JsonConvert.DeserializeObject<ListServersResponse>(response_body);
             return servers_response.Servers;
