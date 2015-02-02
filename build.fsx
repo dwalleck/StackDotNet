@@ -71,7 +71,7 @@ Target "CreatePackage" (fun _ ->
                     ("Newtonsoft.Json", RequireExactly "6.0.8")
                     ("Microsoft.Net.Http", RequireExactly "2.2.28")
                     ("Microsoft.Bcl", RequireExactly "1.1.9")
-                    ("Microsoft.Bcl.Build", RequireExactly "1.0.21")
+                    ("Microsoft.Bcl.Build", RequireExactly "1.0.14")
                 ]
             Files = 
                 [
