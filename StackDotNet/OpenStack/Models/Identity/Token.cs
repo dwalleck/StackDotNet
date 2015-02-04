@@ -149,6 +149,10 @@ namespace StackDotNet.OpenStack.Models.Identity
         public Endpoint GetEndpoint(string name, string region)
         {
             var catalog = ServiceCatalog.Where(c => c.Name == name && c.Endpoints[0].Region == region).FirstOrDefault();
+            if (catalog == null)
+            {
+                return null;
+            }
             return catalog.Endpoints[0];
         }
     }
