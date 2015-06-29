@@ -25,9 +25,9 @@ namespace StackDotNet.OpenStack.Clients
 
         public async Task<AccountMetadata> GetAccountMetadata()
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, BaseUrl);
-            HttpResponseMessage response = await Client.SendAsync(request);
-            AccountMetadata meta = new AccountMetadata(
+            var request = new HttpRequestMessage(HttpMethod.Head, BaseUrl);
+            var response = await Client.SendAsync(request);
+            var meta = new AccountMetadata(
                 Convert.ToInt32(response.Headers.GetValues("X-Account-Object-Count").FirstOrDefault()),
                 Convert.ToInt32(response.Headers.GetValues("X-Account-Object-Count").FirstOrDefault()),
                 Convert.ToInt32(response.Headers.GetValues("X-Account-Object-Count").FirstOrDefault()));

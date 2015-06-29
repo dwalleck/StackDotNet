@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StackDotNet.OpenStack.Models.Compute;
 using Newtonsoft.Json;
 

@@ -24,12 +24,12 @@ namespace StackDotNet.OpenStack.Clients
         public async Task<Access> Authenticate(string username, string password, string tenantName)
         {
 
-            AuthRequest r = new AuthRequest(username, password, tenantName);
-            var content = JsonConvert.SerializeObject(r);
-            var req = new StringContent(content, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync(BaseUrl + "/v2.0/tokens", req);
-            var resp = await response.Content.ReadAsStringAsync();
-            RootObject root = JsonConvert.DeserializeObject<RootObject>(resp);
+            var authRequest = new AuthRequest(username, password, tenantName);
+            var content = JsonConvert.SerializeObject(authRequest);
+            var request = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await Client.PostAsync($"{BaseUrl}/v2.0/tokens", request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var root = JsonConvert.DeserializeObject<RootObject>(responseBody);
             return root.Access;
             
         }
