@@ -9,13 +9,21 @@ namespace StackDotNet.OpenStack.Models.Compute
         [JsonProperty(PropertyName = "server")]
         public CreateServerContent RequestContent { get; set; }
 
-        public CreateServerRequest(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDeviceMapping = null)
+        public CreateServerRequest(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDeviceMapping = null,
+            string diskConfig = null, string adminPassword = null, string keyName = null, bool? isConfigDriveEnabled = null,
+            string accessIPv4Address = null, string accessIPv6Address = null)
         {
             RequestContent = new CreateServerContent
             {
                 Name = name,
                 FlavorRef = flavorId,
                 ImageRef = imageId,
+                DiskConfig = diskConfig,
+                AdminPassword = adminPassword,
+                KeyName = keyName,
+                IsConfigDriveEnabled = isConfigDriveEnabled,
+                AccessIPv4Address = accessIPv4Address,
+                AccessIPv6Address = accessIPv6Address
             };
 
             if (blockDeviceMapping != null)
@@ -38,24 +46,46 @@ namespace StackDotNet.OpenStack.Models.Compute
 
         [JsonProperty(PropertyName = "block_device_mapping")]
         public List<BlockDeviceMapping> BlockDeviceMapping { get; set; }
+
+        [JsonProperty(PropertyName = "disk_config")]
+        public string DiskConfig { get; set; }
+
+        [JsonProperty(PropertyName = "admin_pass")]
+        public string AdminPassword { get; set; }
+
+        [JsonProperty(PropertyName = "key_name")]
+        public string KeyName { get; set; }
+
+        [JsonProperty(PropertyName = "config_drive")]
+        public bool? IsConfigDriveEnabled { get; set; }
+
+        [JsonProperty(PropertyName = "accessIPv4")]
+        public string AccessIPv4Address { get; set; }
+
+        [JsonProperty(PropertyName = "accessIPv6")]
+        public string AccessIPv6Address { get; set; }
+
     }
 
     public class BlockDeviceMapping
     {
-        [JsonProperty(PropertyName = "size")]
-        public int Size { get; set; }
+        [JsonProperty(PropertyName = "boot_index")]
+        public int BootIndex { get; set; }
 
-        [JsonProperty(PropertyName = "device_name")]
-        public string DeviceName { get; set; }
+        [JsonProperty(PropertyName = "uuid")]
+        public string Uuid { get; set; }
 
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [JsonProperty(PropertyName = "volume_size")]
+        public int VolumeSize { get; set; }
+
+        [JsonProperty(PropertyName = "source_type")]
+        public string SourceType { get; set; }
+
+        [JsonProperty(PropertyName = "destination_type")]
+        public string DestinationType { get; set; }
 
         [JsonProperty(PropertyName = "delete_on_termination")]
         public bool DeleteOnTermination { get; set; }
-
-        [JsonProperty(PropertyName = "volume_id")]
-        public string VolumeId { get; set; }
     }
 
 

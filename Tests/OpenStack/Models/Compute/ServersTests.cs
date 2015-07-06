@@ -104,11 +104,12 @@ namespace Tests
         {
             BlockDeviceMapping device = new BlockDeviceMapping
             {
-                Size = 100,
-                DeviceName = "vda",
-                Type = "",
-                DeleteOnTermination = true,
-                VolumeId = "12345"
+                SourceType = "image",
+                BootIndex = 0,
+                Uuid = "7b4dc407-d515-4d96-9eba-cf86bd4a61f7",
+                VolumeSize = 10,
+                DestinationType = "volume",
+                DeleteOnTermination = true              
             };
             var request = new CreateServerRequest("testserver", "1", blockDeviceMapping: device);
             var serializedRequest = JsonConvert.SerializeObject(
@@ -116,7 +117,7 @@ namespace Tests
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
-            var expectedContent = @"{""server"":{""name"":""testserver"",""flavorRef"":""1"",""block_device_mapping"":[{""size"":100,""device_name"":""vda"",""type"":"""",""delete_on_termination"":true,""volume_id"":""12345""}]}}";
+            var expectedContent = @"{""server"":{""name"":""testserver"",""flavorRef"":""1"",""block_device_mapping"":[{""boot_index"":0,""uuid"":""7b4dc407-d515-4d96-9eba-cf86bd4a61f7"",""volume_size"":10,""source_type"":""image"",""destination_type"":""volume"",""delete_on_termination"":true}]}}";
             Assert.AreEqual(serializedRequest, expectedContent);
         }
 

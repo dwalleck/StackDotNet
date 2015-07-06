@@ -63,6 +63,7 @@
     <Compile Include="OpenStack\Models\Compute\ConfirmResizeRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\CreateImageRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\CreateServerRequest.cs" />
+    <Compile Include="OpenStack\Models\Compute\Keypairs.cs" />
     <Compile Include="OpenStack\Models\Compute\RebootServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\RebuildServerRequest.cs" />
     <Compile Include="OpenStack\Models\Compute\ResizeServerRequest.cs" />

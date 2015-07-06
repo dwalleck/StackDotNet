@@ -69,9 +69,9 @@ namespace StackDotNet.OpenStack.Clients
             return addressesResponse.Addresses;
         }
 
-        public async Task<Server> CreateServer(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDevice = null)
+        public async Task<Server> CreateServer(string name, string flavorId, string imageId = null, BlockDeviceMapping blockDevice = null, bool configDriveEnabled = false)
         {
-            var requestBody = new CreateServerRequest(name, flavorId, imageId: imageId, blockDeviceMapping: blockDevice);
+            var requestBody = new CreateServerRequest(name, flavorId, imageId: imageId, blockDeviceMapping: blockDevice, isConfigDriveEnabled: configDriveEnabled);
             var content = JsonConvert.SerializeObject(
                 requestBody, new JsonSerializerSettings
                 {

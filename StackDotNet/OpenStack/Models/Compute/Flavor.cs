@@ -23,6 +23,28 @@ namespace StackDotNet.OpenStack.Models.Compute
 
         [JsonProperty(PropertyName = "vcpus")]
         public int VCPUs { get; set; }
+
+        [JsonProperty(PropertyName = "OS-FLV-WITH-EXT-SPECS:extra_specs")]
+        public FlavorExtraSpecs ExtraSpecs { get; set; }
+
+        [JsonProperty(PropertyName = "OS-FLV-EXT-DATA:ephemeral")]
+        public int EphemeralDisk { get; set; }
+    }
+
+    public class FlavorExtraSpecs
+    {
+        [JsonProperty(PropertyName = "policy_class")]
+        public string PolicyClass { get; set; }
+
+        [JsonProperty(PropertyName = "class")]
+        public string Class { get; set; }
+
+        [JsonProperty(PropertyName = "disk_io_index")]
+        public int DiskIOIndex { get; set; }
+
+        [JsonProperty(PropertyName = "number_of_data_disks")]
+        public int NumberOfDataDisks { get; set; }
+
     }
 
     public class ListFlavorsResponse
