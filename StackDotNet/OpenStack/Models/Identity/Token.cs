@@ -146,11 +146,16 @@ namespace StackDotNet.OpenStack.Models.Identity
         public Endpoint GetEndpoint(string name, string region)
         {
             var catalog = ServiceCatalog.Where(c => c.Name == name && c.Endpoints[0].Region == region).FirstOrDefault();
-            if (catalog == null)
+
+            var endpoint = ServiceCatalog
+                .Where(c => c.Name == name).FirstOrDefault()?.Endpoints
+                .Where(e => e.Region == region)?.FirstOrDefault();
+            /*if (catalog == null)
             {
                 return null;
             }
-            return catalog.Endpoints[0];
+            return catalog.Endpoints[0];*/
+            return endpoint;
         }
     }
 
